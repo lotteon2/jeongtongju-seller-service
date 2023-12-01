@@ -2,4 +2,4 @@ spring:
   application:
     name: seller-service
   config:
-    import: optional:configserver:http://localhost:8888
+    import: optional:configserver:${CONFIG_SERVER}
