@@ -1,11 +1,14 @@
 package com.jeontongju.seller.service;
 
+import com.jeontongju.seller.dto.response.SellerInfoForAdminDto;
 import com.jeontongju.seller.dto.response.SellerMyInfoDto;
 import com.jeontongju.seller.dto.temp.SellerInfoDto;
 import com.jeontongju.seller.exception.SellerEntityNotFoundException;
 import com.jeontongju.seller.repository.SellerRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,5 +30,10 @@ public class SellerService {
 
     return SellerMyInfoDto.toDto(
         sellerRepository.findById(sellerId).orElseThrow(SellerEntityNotFoundException::new));
+  }
+
+  public Page<SellerInfoForAdminDto> getAllSeller(Pageable pageable) {
+
+    return sellerRepository.findAllSeller(pageable);
   }
 }
