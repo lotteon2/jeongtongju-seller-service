@@ -1,6 +1,7 @@
 package com.jeontongju.seller.service;
 
 import com.jeontongju.seller.domain.Seller;
+import com.jeontongju.seller.dto.response.SellerMyInfoDto;
 import com.jeontongju.seller.dto.temp.SellerInfoDto;
 import com.jeontongju.seller.repository.SellerRepository;
 import org.assertj.core.api.Assertions;
@@ -21,6 +22,7 @@ public class SellerServiceTest {
     Seller sellerEntity =
         Seller.builder()
             .sellerId(1L)
+            .email("cc11@naver.com")
             .storeName("우리도가")
             .storeDescription("짱맛이요~!")
             .storeImageUrl("/example")
@@ -40,5 +42,14 @@ public class SellerServiceTest {
 
     Assertions.assertThat(sellerInfoDto.getStoreName()).isSameAs(seller.getStoreName());
     Assertions.assertThat(sellerInfoDto.getStoreImageUrl()).isSameAs(seller.getStoreImageUrl());
+  }
+
+  @Test
+  @DisplayName("TEST - getMySellerInfo")
+  void getMySellerInfo() {
+    Seller seller = initSeller();
+    SellerMyInfoDto sellerMyInfoDto = sellerService.getMySellerInfo(seller.getSellerId());
+
+    Assertions.assertThat(sellerMyInfoDto.getEmail()).isSameAs(seller.getEmail());
   }
 }

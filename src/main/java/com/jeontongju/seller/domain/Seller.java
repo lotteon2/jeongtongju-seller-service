@@ -17,6 +17,9 @@ public class Seller extends BaseEntity {
   @Column(name = "seller_id")
   private Long sellerId;
 
+  @Column(name = "email", nullable = false, unique = true)
+  private String email;
+
   @Column(name = "store_name", nullable = false, length = 10)
   private String storeName;
 

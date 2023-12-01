@@ -16,11 +16,11 @@ import lombok.Getter;
 @AllArgsConstructor
 public class ResponseFormat<T> {
 
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    private final T data;
     private Integer code;
     private String message;
     private String detail;
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private String failure;
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private final T data;
 }
