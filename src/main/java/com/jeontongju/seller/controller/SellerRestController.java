@@ -1,15 +1,13 @@
 package com.jeontongju.seller.controller;
 
+import com.jeontongju.seller.dto.response.SellerInfoForConsumerDto;
 import com.jeontongju.seller.dto.response.SellerMyInfoDto;
 import com.jeontongju.seller.dto.temp.ResponseFormat;
 import com.jeontongju.seller.service.SellerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RequestMapping("/api")
 @RestController
@@ -28,6 +26,19 @@ public class SellerRestController {
                             .message(HttpStatus.OK.name())
                             .detail("셀러 자신의 정보 조회 성공")
                             .data(sellerService.getMySellerInfo(memberId))
+                            .build());
+  }
+
+  @GetMapping("/sellers/{sellerId}/info")
+  public ResponseEntity<ResponseFormat<SellerInfoForConsumerDto>> getSellerOneForConsumer(@PathVariable Long sellerId) {
+
+    return ResponseEntity.ok()
+            .body(
+                    ResponseFormat.<SellerInfoForConsumerDto>builder()
+                            .code(HttpStatus.OK.value())
+                            .message(HttpStatus.OK.name())
+                            .detail("셀러 정보 조회 성공")
+                            .data(sellerService.getSellerOneForConsumer(sellerId))
                             .build());
   }
 }
