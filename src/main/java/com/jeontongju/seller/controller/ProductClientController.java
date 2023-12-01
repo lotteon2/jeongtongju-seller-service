@@ -18,8 +18,6 @@ public class ProductClientController {
   @GetMapping("/sellers/{sellerId}/name-image")
   FeignFormat<SellerInfoDto> getSellerInfoForCreateProduct(@PathVariable Long sellerId) {
 
-    System.out.println(sellerService.getSellerInfo(sellerId).getStoreName());
-
     return FeignFormat.<SellerInfoDto>builder()
         .code(HttpStatus.OK.value())
         .data(sellerService.getSellerInfo(sellerId))
