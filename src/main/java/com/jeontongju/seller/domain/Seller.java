@@ -49,4 +49,8 @@ public class Seller extends BaseEntity {
   @Builder.Default
   @Column(name = "is_deleted", nullable = false)
   private Boolean isDeleted = false;
+
+  public void setApprovalState(ApprovalState approvalState) {
+    this.approvalState = approvalState;
+  }
 }
