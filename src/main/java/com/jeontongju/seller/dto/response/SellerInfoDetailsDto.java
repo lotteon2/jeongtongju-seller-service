@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class SellerInfoDetails {
+public class SellerInfoDetailsDto {
 
   private Long sellerId;
   private String email;
@@ -18,8 +18,8 @@ public class SellerInfoDetails {
   private String storePhoneNumber;
   private String storeImageUrl;
 
-  public static SellerInfoDetails toDto(Seller seller) {
-    return SellerInfoDetails.builder()
+  public static SellerInfoDetailsDto toDto(Seller seller) {
+    return SellerInfoDetailsDto.builder()
         .sellerId(seller.getSellerId())
         .email(seller.getEmail())
         .storeName(seller.getStoreName())

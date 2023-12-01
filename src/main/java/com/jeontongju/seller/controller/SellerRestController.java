@@ -1,6 +1,6 @@
 package com.jeontongju.seller.controller;
 
-import com.jeontongju.seller.dto.response.SellerInfoDetails;
+import com.jeontongju.seller.dto.response.SellerInfoDetailsDto;
 import com.jeontongju.seller.dto.response.SellerMyInfoDto;
 import com.jeontongju.seller.dto.temp.ResponseFormat;
 import com.jeontongju.seller.service.SellerService;
@@ -30,13 +30,13 @@ public class SellerRestController {
   }
 
   @GetMapping("/sellers/{sellerId}")
-  public ResponseEntity<ResponseFormat<SellerInfoDetails>> getSellerOne(
+  public ResponseEntity<ResponseFormat<SellerInfoDetailsDto>> getSellerOne(
           @PathVariable Long sellerId,
           @RequestHeader Long memberId, String memberRole) {
 
     return ResponseEntity.ok()
             .body(
-                    ResponseFormat.<SellerInfoDetails>builder()
+                    ResponseFormat.<SellerInfoDetailsDto>builder()
                             .code(HttpStatus.OK.value())
                             .message(HttpStatus.OK.name())
                             .detail("특정 셀러 정보 조회에 성공")

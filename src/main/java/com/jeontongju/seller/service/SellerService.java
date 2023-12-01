@@ -1,6 +1,6 @@
 package com.jeontongju.seller.service;
 
-import com.jeontongju.seller.dto.response.SellerInfoDetails;
+import com.jeontongju.seller.dto.response.SellerInfoDetailsDto;
 import com.jeontongju.seller.dto.response.SellerMyInfoDto;
 import com.jeontongju.seller.dto.temp.SellerInfoDto;
 import com.jeontongju.seller.exception.SellerEntityNotFoundException;
@@ -30,9 +30,9 @@ public class SellerService {
         sellerRepository.findById(sellerId).orElseThrow(SellerEntityNotFoundException::new));
   }
 
-  public SellerInfoDetails getSellerOne(Long sellerId) {
+  public SellerInfoDetailsDto getSellerOne(Long sellerId) {
 
-    return SellerInfoDetails.toDto(
+    return SellerInfoDetailsDto.toDto(
         sellerRepository.findById(sellerId).orElseThrow(SellerEntityNotFoundException::new));
   }
 }
