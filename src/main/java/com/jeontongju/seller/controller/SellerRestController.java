@@ -1,5 +1,6 @@
 package com.jeontongju.seller.controller;
 
+import com.jeontongju.seller.dto.response.SellerInfoForConsumerDto;
 import com.jeontongju.seller.dto.response.SellerInfoDetailsDto;
 import com.jeontongju.seller.dto.response.SellerMyInfoDto;
 import com.jeontongju.seller.dto.temp.ResponseFormat;
@@ -27,6 +28,19 @@ public class SellerRestController {
                             .detail("셀러 자신의 정보 조회 성공")
                             .data(sellerService.getMySellerInfo(memberId))
                             .build());
+  }
+
+  @GetMapping("/sellers/{sellerId}/info")
+  public ResponseEntity<ResponseFormat<SellerInfoForConsumerDto>> getSellerOneForConsumer(@PathVariable Long sellerId) {
+
+    return ResponseEntity.ok()
+            .body(
+                    ResponseFormat.<SellerInfoForConsumerDto>builder()
+                            .code(HttpStatus.OK.value())
+                            .message(HttpStatus.OK.name())
+                            .detail("셀러 정보 조회 성공")
+                            .data(sellerService.getSellerOneForConsumer(sellerId))
+                                  .build());
   }
 
   @GetMapping("/sellers/{sellerId}")
