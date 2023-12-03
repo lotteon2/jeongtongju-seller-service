@@ -1,10 +1,12 @@
 package com.jeontongju.seller.service;
 
 import com.jeontongju.seller.domain.Seller;
+import com.jeontongju.seller.dto.reqeust.SellerJudgeRequestDto;
 import com.jeontongju.seller.dto.response.SellerInfoForConsumerDto;
 import com.jeontongju.seller.dto.response.SellerInfoDetailsDto;
 import com.jeontongju.seller.dto.response.SellerMyInfoDto;
 import com.jeontongju.seller.dto.temp.SellerInfoDto;
+import com.jeontongju.seller.enums.ApprovalState;
 import com.jeontongju.seller.repository.SellerRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
@@ -53,6 +55,17 @@ public class SellerServiceTest {
     SellerMyInfoDto sellerMyInfoDto = sellerService.getMySellerInfo(seller.getSellerId());
 
     Assertions.assertThat(sellerMyInfoDto.getEmail()).isSameAs(seller.getEmail());
+  }
+
+  @Test
+  @DisplayName("TEST - modifySellerApprovalState")
+  void modifySellerApprovalState() {
+    Seller seller = initSeller();
+    SellerJudgeRequestDto sellerJudgeRequestDto = new SellerJudgeRequestDto(seller.getSellerId(), ApprovalState.ALLOW);
+    Assertions.assertThat(seller.getApprovalState()).isSameAs(ApprovalState.WAIT);
+    sellerService.modifySellerApprovalState(sellerJudgeRequestDto);
+    Seller savedSeller = sellerRepository.findById(seller.getSellerId()).get();
+    Assertions.assertThat(savedSeller.getApprovalState()).isSameAs(ApprovalState.ALLOW);
   }
 
   @Test

@@ -1,5 +1,6 @@
 package com.jeontongju.seller.controller;
 
+import com.jeontongju.seller.dto.reqeust.SellerJudgeRequestDto;
 import com.jeontongju.seller.dto.response.SellerInfoForConsumerDto;
 import com.jeontongju.seller.dto.response.SellerInfoDetailsDto;
 import com.jeontongju.seller.dto.response.SellerMyInfoDto;
@@ -18,16 +19,33 @@ public class SellerRestController {
   private final SellerService sellerService;
 
   @GetMapping("/sellers")
-  public ResponseEntity<ResponseFormat<SellerMyInfoDto>> getMySellerInfo(@RequestHeader Long memberId, String memberRole) {
+  public ResponseEntity<ResponseFormat<SellerMyInfoDto>> getMySellerInfo(
+      @RequestHeader Long memberId, String memberRole) {
 
     return ResponseEntity.ok()
-            .body(
-                    ResponseFormat.<SellerMyInfoDto>builder()
-                            .code(HttpStatus.OK.value())
-                            .message(HttpStatus.OK.name())
-                            .detail("셀러 자신의 정보 조회 성공")
-                            .data(sellerService.getMySellerInfo(memberId))
-                            .build());
+        .body(
+            ResponseFormat.<SellerMyInfoDto>builder()
+                .code(HttpStatus.OK.value())
+                .message(HttpStatus.OK.name())
+                .detail("셀러 자신의 정보 조회 성공")
+                .data(sellerService.getMySellerInfo(memberId))
+                .build());
+  }
+
+  @PatchMapping("/sellers/judge")
+  public ResponseEntity<ResponseFormat<Void>> modifySellerApprovalState(
+      @RequestHeader Long memberId,
+      String memberRole,
+      @RequestBody SellerJudgeRequestDto sellerJudgeRequestDto) {
+
+    sellerService.modifySellerApprovalState(sellerJudgeRequestDto);
+    return ResponseEntity.ok()
+        .body(
+            ResponseFormat.<Void>builder()
+                .code(HttpStatus.OK.value())
+                .message(HttpStatus.OK.name())
+                .detail("셀러 승인 여부 변경 성공")
+                .build());
   }
 
   @GetMapping("/sellers/{sellerId}/info")

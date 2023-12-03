@@ -1,5 +1,7 @@
 package com.jeontongju.seller.service;
 
+import com.jeontongju.seller.domain.Seller;
+import com.jeontongju.seller.dto.reqeust.SellerJudgeRequestDto;
 import com.jeontongju.seller.dto.response.SellerInfoForConsumerDto;
 import com.jeontongju.seller.dto.response.SellerInfoDetailsDto;
 import com.jeontongju.seller.dto.response.SellerMyInfoDto;
@@ -29,6 +31,15 @@ public class SellerService {
 
     return SellerMyInfoDto.toDto(
         sellerRepository.findById(sellerId).orElseThrow(SellerEntityNotFoundException::new));
+  }
+
+  @Transactional
+  public void modifySellerApprovalState(SellerJudgeRequestDto sellerJudgeRequestDto) {
+    Seller seller =
+        sellerRepository
+            .findById(sellerJudgeRequestDto.getSellerId())
+            .orElseThrow(SellerEntityNotFoundException::new);
+    seller.setApprovalState(sellerJudgeRequestDto.getApprovalState());
   }
 
   public SellerInfoForConsumerDto getSellerOneForConsumer(Long sellerId) {
