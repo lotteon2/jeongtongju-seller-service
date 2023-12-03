@@ -1,11 +1,16 @@
 package com.jeontongju.seller.controller;
 
+import com.jeontongju.seller.dto.reqeust.ModifySellerInfo;
 import com.jeontongju.seller.dto.reqeust.SellerJudgeRequestDto;
-import com.jeontongju.seller.dto.response.SellerInfoForConsumerDto;
 import com.jeontongju.seller.dto.response.SellerInfoDetailsDto;
+import com.jeontongju.seller.dto.response.SellerInfoForConsumerDto;
 import com.jeontongju.seller.dto.response.SellerMyInfoDto;
 import com.jeontongju.seller.dto.temp.ResponseFormat;
+import com.jeontongju.seller.enums.temp.MemberRoleEnum;
 import com.jeontongju.seller.service.SellerService;
+
+import javax.servlet.annotation.WebServlet;
+import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +25,7 @@ public class SellerRestController {
 
   @GetMapping("/sellers")
   public ResponseEntity<ResponseFormat<SellerMyInfoDto>> getMySellerInfo(
-      @RequestHeader Long memberId, String memberRole) {
+      @RequestHeader Long memberId, @RequestHeader MemberRoleEnum memberRole) {
 
     return ResponseEntity.ok()
         .body(
@@ -35,8 +40,8 @@ public class SellerRestController {
   @PatchMapping("/sellers/judge")
   public ResponseEntity<ResponseFormat<Void>> modifySellerApprovalState(
       @RequestHeader Long memberId,
-      String memberRole,
-      @RequestBody SellerJudgeRequestDto sellerJudgeRequestDto) {
+      @RequestHeader MemberRoleEnum memberRole,
+      @Valid @RequestBody SellerJudgeRequestDto sellerJudgeRequestDto) {
 
     sellerService.modifySellerApprovalState(sellerJudgeRequestDto);
     return ResponseEntity.ok()
@@ -49,30 +54,48 @@ public class SellerRestController {
   }
 
   @GetMapping("/sellers/{sellerId}/info")
-  public ResponseEntity<ResponseFormat<SellerInfoForConsumerDto>> getSellerOneForConsumer(@PathVariable Long sellerId) {
+  public ResponseEntity<ResponseFormat<SellerInfoForConsumerDto>> getSellerOneForConsumer(
+      @PathVariable Long sellerId) {
 
     return ResponseEntity.ok()
-            .body(
-                    ResponseFormat.<SellerInfoForConsumerDto>builder()
-                            .code(HttpStatus.OK.value())
-                            .message(HttpStatus.OK.name())
-                            .detail("셀러 정보 조회 성공")
-                            .data(sellerService.getSellerOneForConsumer(sellerId))
-                                  .build());
+        .body(
+            ResponseFormat.<SellerInfoForConsumerDto>builder()
+                .code(HttpStatus.OK.value())
+                .message(HttpStatus.OK.name())
+                .detail("셀러 정보 조회 성공")
+                .data(sellerService.getSellerOneForConsumer(sellerId))
+                .build());
   }
 
   @GetMapping("/sellers/{sellerId}")
   public ResponseEntity<ResponseFormat<SellerInfoDetailsDto>> getSellerOne(
-          @PathVariable Long sellerId,
-          @RequestHeader Long memberId, String memberRole) {
+      @PathVariable Long sellerId,
+      @RequestHeader Long memberId,
+      @RequestHeader MemberRoleEnum memberRole) {
 
     return ResponseEntity.ok()
-            .body(
-                    ResponseFormat.<SellerInfoDetailsDto>builder()
-                            .code(HttpStatus.OK.value())
-                            .message(HttpStatus.OK.name())
-                            .detail("특정 셀러 정보 조회에 성공")
-                            .data(sellerService.getSellerOne(sellerId))
-                            .build());
+        .body(
+            ResponseFormat.<SellerInfoDetailsDto>builder()
+                .code(HttpStatus.OK.value())
+                .message(HttpStatus.OK.name())
+                .detail("특정 셀러 정보 조회에 성공")
+                .data(sellerService.getSellerOne(sellerId))
+                .build());
+  }
+
+  @PatchMapping("/sellers")
+  public ResponseEntity<ResponseFormat<Void>> modifySeller(
+      @RequestHeader Long memberId,
+      @RequestHeader MemberRoleEnum memberRole,
+      @Valid @RequestBody ModifySellerInfo modifySellerInfo) {
+
+    sellerService.modifySeller(memberId, modifySellerInfo);
+    return ResponseEntity.ok()
+        .body(
+            ResponseFormat.<Void>builder()
+                .code(HttpStatus.OK.value())
+                .message(HttpStatus.OK.name())
+                .detail("개인 정보 수정 성공")
+                .build());
   }
 }
