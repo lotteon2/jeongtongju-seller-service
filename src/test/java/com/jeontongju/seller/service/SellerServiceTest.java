@@ -86,4 +86,14 @@ public class SellerServiceTest {
     Assertions.assertThat(sellerInfoDetails.getSellerId()).isSameAs(seller.getSellerId());
     Assertions.assertThat(sellerInfoDetails.getEmail()).isSameAs(seller.getEmail());
   }
+
+  @Test
+  @DisplayName("TEST - deleteSeller")
+  void deleteSeller() {
+    Seller seller = initSeller();
+    Assertions.assertThat(seller.getIsDeleted()).isSameAs(false);
+    sellerService.deleteSeller(seller.getSellerId());
+    Seller savedSeller = sellerRepository.findById(seller.getSellerId()).get();
+    Assertions.assertThat(savedSeller.getIsDeleted()).isSameAs(true);
+  }
 }

@@ -7,6 +7,7 @@ import com.jeontongju.seller.dto.response.SellerInfoDetailsDto;
 import com.jeontongju.seller.dto.response.SellerMyInfoDto;
 import com.jeontongju.seller.dto.temp.SellerInfoDto;
 import com.jeontongju.seller.exception.SellerEntityNotFoundException;
+import com.jeontongju.seller.kafka.SellerProducer;
 import com.jeontongju.seller.repository.SellerRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class SellerService {
 
   private final SellerRepository sellerRepository;
+  private final SellerProducer sellerProducer;
 
   public SellerInfoDto getSellerInfo(Long sellerId) {
 
@@ -52,5 +54,12 @@ public class SellerService {
 
     return SellerInfoDetailsDto.toDto(
         sellerRepository.findById(sellerId).orElseThrow(SellerEntityNotFoundException::new));
+  }
+
+  @Transactional
+  public void deleteSeller(Long sellerId) {
+    Seller seller = sellerRepository.findById(sellerId).orElseThrow(SellerEntityNotFoundException::new);
+    seller.setDeleted(true);
+    sellerProducer.deleteSeller(sellerId);
   }
 }
