@@ -1,6 +1,8 @@
 package com.jeontongju.seller.controller;
 
 import com.jeontongju.seller.dto.reqeust.SellerJudgeRequestDto;
+import com.jeontongju.seller.dto.response.SellerInfoForConsumerDto;
+import com.jeontongju.seller.dto.response.SellerInfoDetailsDto;
 import com.jeontongju.seller.dto.response.SellerMyInfoDto;
 import com.jeontongju.seller.dto.temp.ResponseFormat;
 import com.jeontongju.seller.service.SellerService;
@@ -44,5 +46,33 @@ public class SellerRestController {
                 .message(HttpStatus.OK.name())
                 .detail("셀러 승인 여부 변경 성공")
                 .build());
+  }
+
+  @GetMapping("/sellers/{sellerId}/info")
+  public ResponseEntity<ResponseFormat<SellerInfoForConsumerDto>> getSellerOneForConsumer(@PathVariable Long sellerId) {
+
+    return ResponseEntity.ok()
+            .body(
+                    ResponseFormat.<SellerInfoForConsumerDto>builder()
+                            .code(HttpStatus.OK.value())
+                            .message(HttpStatus.OK.name())
+                            .detail("셀러 정보 조회 성공")
+                            .data(sellerService.getSellerOneForConsumer(sellerId))
+                                  .build());
+  }
+
+  @GetMapping("/sellers/{sellerId}")
+  public ResponseEntity<ResponseFormat<SellerInfoDetailsDto>> getSellerOne(
+          @PathVariable Long sellerId,
+          @RequestHeader Long memberId, String memberRole) {
+
+    return ResponseEntity.ok()
+            .body(
+                    ResponseFormat.<SellerInfoDetailsDto>builder()
+                            .code(HttpStatus.OK.value())
+                            .message(HttpStatus.OK.name())
+                            .detail("특정 셀러 정보 조회에 성공")
+                            .data(sellerService.getSellerOne(sellerId))
+                            .build());
   }
 }
