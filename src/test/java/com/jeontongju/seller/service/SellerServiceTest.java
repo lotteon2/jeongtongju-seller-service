@@ -2,6 +2,7 @@ package com.jeontongju.seller.service;
 
 import com.jeontongju.seller.domain.Seller;
 import com.jeontongju.seller.dto.reqeust.SellerJudgeRequestDto;
+import com.jeontongju.seller.dto.response.GetMySellerInfo;
 import com.jeontongju.seller.dto.response.SellerInfoForConsumerDto;
 import com.jeontongju.seller.dto.response.SellerInfoDetailsDto;
 import com.jeontongju.seller.dto.response.SellerMyInfoDto;
@@ -85,5 +86,15 @@ public class SellerServiceTest {
 
     Assertions.assertThat(sellerInfoDetails.getSellerId()).isSameAs(seller.getSellerId());
     Assertions.assertThat(sellerInfoDetails.getEmail()).isSameAs(seller.getEmail());
+  }
+
+  @Test
+  @DisplayName("TEST - getMyInfo")
+  void getMyInfo() {
+    Seller seller = initSeller();
+    GetMySellerInfo getMySellerInfo = sellerService.getMyInfo(seller.getSellerId());
+
+    Assertions.assertThat(getMySellerInfo.getSellerId()).isSameAs(seller.getSellerId());
+    Assertions.assertThat(getMySellerInfo.getApprovalState()).isSameAs(seller.getApprovalState());
   }
 }
