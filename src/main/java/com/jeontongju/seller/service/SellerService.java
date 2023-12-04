@@ -1,6 +1,7 @@
 package com.jeontongju.seller.service;
 
 import com.jeontongju.seller.domain.Seller;
+import com.jeontongju.seller.dto.reqeust.ModifySellerInfo;
 import com.jeontongju.seller.dto.reqeust.SellerJudgeRequestDto;
 import com.jeontongju.seller.dto.response.SellerInfoDetailsDto;
 import com.jeontongju.seller.dto.response.SellerInfoForConsumerDto;
@@ -8,6 +9,7 @@ import com.jeontongju.seller.dto.response.SellerMyInfoDto;
 import com.jeontongju.seller.dto.temp.SellerInfoDto;
 import com.jeontongju.seller.dto.temp.SignUpInfo;
 import com.jeontongju.seller.exception.SellerEntityNotFoundException;
+import com.jeontongju.seller.kafka.ProductProducer;
 import com.jeontongju.seller.mapper.SellerMapper;
 import com.jeontongju.seller.repository.SellerRepository;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class SellerService {
 
   private final SellerRepository sellerRepository;
+  private final ProductProducer productProducer;
   private final SellerMapper sellerMapper;
 
   public SellerInfoDto getSellerInfo(Long sellerId) {
@@ -57,6 +60,15 @@ public class SellerService {
         sellerRepository.findById(sellerId).orElseThrow(SellerEntityNotFoundException::new));
   }
 
+  @Transactional
+  public void modifySeller(Long memberId, ModifySellerInfo modifySellerInfo) {
+
+    Seller seller = sellerRepository.findById(memberId).orElseThrow(SellerEntityNotFoundException::new);
+    seller.modifySeller(modifySellerInfo);
+
+    productProducer.sendUpdateSeller(SellerInfoDto.toDto(seller));
+ }
+  
   @Transactional
   public Seller saveSeller(SignUpInfo signUpInfo) {
     return sellerRepository.save(sellerMapper.toSeller(signUpInfo));

@@ -1,6 +1,7 @@
 package com.jeontongju.seller.domain;
 
 import com.jeontongju.seller.domain.common.BaseEntity;
+import com.jeontongju.seller.dto.reqeust.ModifySellerInfo;
 import com.jeontongju.seller.enums.ApprovalState;
 import javax.persistence.*;
 import lombok.*;
@@ -50,7 +51,42 @@ public class Seller extends BaseEntity {
   @Column(name = "is_deleted", nullable = false)
   private Boolean isDeleted = false;
 
+  public void setStoreName(String storeName) {
+    if (storeName != null) {
+      this.storeName = storeName;
+    }
+  }
+
+  public void setStoreDescription(String storeDescription) {
+    if (storeDescription != null) {
+      this.storeDescription = storeDescription;
+    }
+  }
+
+  public void setStoreImageUrl(String storeImageUrl) {
+    if (storeImageUrl != null) {
+      this.storeImageUrl = storeImageUrl;
+    }
+  }
+
+  public void setStorePhoneNumber(String storePhoneNumber) {
+    if (storePhoneNumber != null) {
+      this.storePhoneNumber = storePhoneNumber;
+    }
+  }
+
   public void setApprovalState(ApprovalState approvalState) {
     this.approvalState = approvalState;
+  }
+
+  public void setDeleted(Boolean deleted) {
+    isDeleted = deleted;
+  }
+
+  public void modifySeller(ModifySellerInfo modifySellerInfo) {
+    setStoreName(modifySellerInfo.getStoreName());
+    setStoreDescription(modifySellerInfo.getStoreDescription());
+    setStorePhoneNumber(modifySellerInfo.getStorePhoneNumber());
+    setStoreImageUrl(modifySellerInfo.getStoreImageUrl());
   }
 }
