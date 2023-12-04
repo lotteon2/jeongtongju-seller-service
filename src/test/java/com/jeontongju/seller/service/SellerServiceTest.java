@@ -7,6 +7,7 @@ import com.jeontongju.seller.dto.response.SellerInfoForConsumerDto;
 import com.jeontongju.seller.dto.response.SellerInfoDetailsDto;
 import com.jeontongju.seller.dto.response.SellerMyInfoDto;
 import com.jeontongju.seller.dto.temp.SellerInfoDto;
+import com.jeontongju.seller.dto.temp.SignUpInfo;
 import com.jeontongju.seller.enums.ApprovalState;
 import com.jeontongju.seller.repository.SellerRepository;
 import org.assertj.core.api.Assertions;
@@ -105,4 +106,25 @@ public class SellerServiceTest {
     Assertions.assertThat(savedSeller.getStoreImageUrl()).isSameAs(modifySellerInfo.getStoreImageUrl());
   }
 
+  @Test
+  @DisplayName("TEST - saveSeller")
+  void saveSeller() {
+
+    SignUpInfo signUpInfo = SignUpInfo.builder()
+            .memberId(2L)
+            .email("cc11@naver.com")
+            .storeName("우리도가")
+            .storeDescription("짱맛이요~!")
+            .storeImageUrl("/example")
+            .storePhoneNumber("0233332222")
+            .businessmanName("최최소")
+            .businessmanPhoneNumber("01033332222")
+            .build();
+
+    Seller seller = sellerService.saveSeller(signUpInfo);
+
+    Assertions.assertThat(seller.getSellerId()).isSameAs(signUpInfo.getMemberId());
+    Assertions.assertThat(seller.getEmail()).isSameAs(signUpInfo.getEmail());
+    Assertions.assertThat(seller.getApprovalState()).isSameAs(ApprovalState.WAIT);
+  }
 }
