@@ -9,6 +9,7 @@ import com.jeontongju.seller.dto.response.SellerMyInfoDto;
 import com.jeontongju.seller.dto.temp.SellerInfoDto;
 import com.jeontongju.seller.dto.temp.SignUpInfo;
 import com.jeontongju.seller.exception.SellerEntityNotFoundException;
+import com.jeontongju.seller.kafka.SellerProducer;
 import com.jeontongju.seller.kafka.ProductProducer;
 import com.jeontongju.seller.mapper.SellerMapper;
 import com.jeontongju.seller.repository.SellerRepository;
@@ -24,6 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class SellerService {
 
   private final SellerRepository sellerRepository;
+  private final SellerProducer sellerProducer;
   private final ProductProducer productProducer;
   private final SellerMapper sellerMapper;
 
@@ -60,6 +62,13 @@ public class SellerService {
         sellerRepository.findById(sellerId).orElseThrow(SellerEntityNotFoundException::new));
   }
 
+ @Transactional
+  public void deleteSeller(Long sellerId) {
+    Seller seller = sellerRepository.findById(sellerId).orElseThrow(SellerEntityNotFoundException::new);
+    seller.setDeleted(true);
+    sellerProducer.deleteSeller(sellerId);
+  }
+  
   @Transactional
   public void modifySeller(Long memberId, ModifySellerInfo modifySellerInfo) {
 

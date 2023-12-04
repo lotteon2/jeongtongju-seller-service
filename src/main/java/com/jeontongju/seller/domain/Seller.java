@@ -18,7 +18,7 @@ public class Seller extends BaseEntity {
   @Column(name = "seller_id")
   private Long sellerId;
 
-  @Column(name = "email", nullable = false, unique = true)
+  @Column(name = "email", nullable = false)
   private String email;
 
   @Column(name = "store_name", nullable = false, length = 10)
@@ -80,7 +80,7 @@ public class Seller extends BaseEntity {
   }
 
   public void setDeleted(Boolean deleted) {
-    isDeleted = deleted;
+    this.isDeleted = deleted;
   }
 
   public void modifySeller(ModifySellerInfo modifySellerInfo) {

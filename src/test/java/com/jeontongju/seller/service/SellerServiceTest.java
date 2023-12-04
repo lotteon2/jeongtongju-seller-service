@@ -90,6 +90,16 @@ public class SellerServiceTest {
   }
 
   @Test
+  @DisplayName("TEST - deleteSeller")
+  void deleteSeller() {
+    Seller seller = initSeller();
+    Assertions.assertThat(seller.getIsDeleted()).isSameAs(false);
+    sellerService.deleteSeller(seller.getSellerId());
+    Seller savedSeller = sellerRepository.findById(seller.getSellerId()).get();
+    Assertions.assertThat(savedSeller.getIsDeleted()).isSameAs(true);
+}
+  
+  @Test
   @DisplayName("TEST - modifySeller")
   void modifySeller() {
     Seller seller = initSeller();

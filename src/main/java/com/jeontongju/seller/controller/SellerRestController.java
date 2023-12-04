@@ -90,12 +90,45 @@ public class SellerRestController {
       @Valid @RequestBody ModifySellerInfo modifySellerInfo) {
 
     sellerService.modifySeller(memberId, modifySellerInfo);
+  
+    return ResponseEntity.ok()
+      .body(
+          ResponseFormat.<Void>builder()
+              .code(HttpStatus.OK.value())
+              .message(HttpStatus.OK.name())
+              .detail("개인 정보 수정 성공")
+              .build());
+  }
+  
+  @DeleteMapping("/sellers")
+  public ResponseEntity<ResponseFormat<Void>> deleteSellerBySeller(
+      @RequestHeader Long memberId, @RequestHeader MemberRoleEnum memberRole) {
+
+    sellerService.deleteSeller(memberId);
+  
+    return ResponseEntity.ok()
+      .body(
+          ResponseFormat.<Void>builder()
+              .code(HttpStatus.OK.value())
+              .message(HttpStatus.OK.name())
+              .detail("셀러 탈퇴 성공")
+              .build());
+  }
+
+  @DeleteMapping("/sellers/{sellerId}")
+  public ResponseEntity<ResponseFormat<Void>> deleteSellerByAdmin(
+      @RequestHeader Long memberId,
+      @RequestHeader MemberRoleEnum memberRole,
+      @PathVariable Long sellerId) {
+
+    sellerService.deleteSeller(sellerId);
+    
     return ResponseEntity.ok()
         .body(
             ResponseFormat.<Void>builder()
                 .code(HttpStatus.OK.value())
                 .message(HttpStatus.OK.name())
-                .detail("개인 정보 수정 성공")
+                .detail("셀러 탈퇴 성공")
                 .build());
   }
 }
