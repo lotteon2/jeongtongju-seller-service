@@ -2,6 +2,8 @@ package com.jeontongju.seller.controller;
 
 import com.jeontongju.seller.dto.reqeust.ModifySellerInfo;
 import com.jeontongju.seller.dto.reqeust.SellerJudgeRequestDto;
+import com.jeontongju.seller.dto.response.GetMySellerInfo;
+import com.jeontongju.seller.dto.response.SellerInfoForConsumerDto;
 import com.jeontongju.seller.dto.response.SellerInfoDetailsDto;
 import com.jeontongju.seller.dto.response.SellerInfoForConsumerDto;
 import com.jeontongju.seller.dto.response.SellerMyInfoDto;
@@ -130,5 +132,19 @@ public class SellerRestController {
                 .message(HttpStatus.OK.name())
                 .detail("셀러 탈퇴 성공")
                 .build());
+  }
+
+  @GetMapping("/sellers/info")
+  public ResponseEntity<ResponseFormat<GetMySellerInfo>> getMyInfo(
+          @RequestHeader Long memberId, @RequestHeader MemberRoleEnum memberRole) {
+
+    return ResponseEntity.ok()
+            .body(
+                    ResponseFormat.<GetMySellerInfo>builder()
+                            .code(HttpStatus.OK.value())
+                            .message(HttpStatus.OK.name())
+                            .detail("내 정보 조회에 성공")
+                            .data(sellerService.getMyInfo(memberId))
+                            .build());
   }
 }

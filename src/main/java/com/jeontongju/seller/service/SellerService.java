@@ -3,6 +3,8 @@ package com.jeontongju.seller.service;
 import com.jeontongju.seller.domain.Seller;
 import com.jeontongju.seller.dto.reqeust.ModifySellerInfo;
 import com.jeontongju.seller.dto.reqeust.SellerJudgeRequestDto;
+import com.jeontongju.seller.dto.response.GetMySellerInfo;
+import com.jeontongju.seller.dto.response.SellerInfoForConsumerDto;
 import com.jeontongju.seller.dto.response.SellerInfoDetailsDto;
 import com.jeontongju.seller.dto.response.SellerInfoForConsumerDto;
 import com.jeontongju.seller.dto.response.SellerMyInfoDto;
@@ -62,7 +64,13 @@ public class SellerService {
         sellerRepository.findById(sellerId).orElseThrow(SellerEntityNotFoundException::new));
   }
 
- @Transactional
+  public GetMySellerInfo getMyInfo(Long sellerId) {
+
+    return GetMySellerInfo.toDto(
+            sellerRepository.findById(sellerId).orElseThrow(SellerEntityNotFoundException::new));
+} 
+
+  @Transactional
   public void deleteSeller(Long sellerId) {
     Seller seller = sellerRepository.findById(sellerId).orElseThrow(SellerEntityNotFoundException::new);
     seller.setDeleted(true);
