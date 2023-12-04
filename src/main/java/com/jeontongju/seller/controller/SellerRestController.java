@@ -1,5 +1,6 @@
 package com.jeontongju.seller.controller;
 
+import com.jeontongju.seller.dto.reqeust.ModifySellerInfo;
 import com.jeontongju.seller.dto.reqeust.SellerJudgeRequestDto;
 import com.jeontongju.seller.dto.response.SellerInfoDetailsDto;
 import com.jeontongju.seller.dto.response.SellerInfoForConsumerDto;
@@ -7,6 +8,9 @@ import com.jeontongju.seller.dto.response.SellerMyInfoDto;
 import com.jeontongju.seller.dto.temp.ResponseFormat;
 import com.jeontongju.seller.enums.temp.MemberRoleEnum;
 import com.jeontongju.seller.service.SellerService;
+
+import javax.servlet.annotation.WebServlet;
+import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -37,7 +41,7 @@ public class SellerRestController {
   public ResponseEntity<ResponseFormat<Void>> modifySellerApprovalState(
       @RequestHeader Long memberId,
       @RequestHeader MemberRoleEnum memberRole,
-      @RequestBody SellerJudgeRequestDto sellerJudgeRequestDto) {
+      @Valid @RequestBody SellerJudgeRequestDto sellerJudgeRequestDto) {
 
     sellerService.modifySellerApprovalState(sellerJudgeRequestDto);
     return ResponseEntity.ok()
@@ -79,18 +83,36 @@ public class SellerRestController {
                 .build());
   }
 
+  @PatchMapping("/sellers")
+  public ResponseEntity<ResponseFormat<Void>> modifySeller(
+      @RequestHeader Long memberId,
+      @RequestHeader MemberRoleEnum memberRole,
+      @Valid @RequestBody ModifySellerInfo modifySellerInfo) {
+
+    sellerService.modifySeller(memberId, modifySellerInfo);
+  
+    return ResponseEntity.ok()
+      .body(
+          ResponseFormat.<Void>builder()
+              .code(HttpStatus.OK.value())
+              .message(HttpStatus.OK.name())
+              .detail("개인 정보 수정 성공")
+              .build());
+  }
+  
   @DeleteMapping("/sellers")
   public ResponseEntity<ResponseFormat<Void>> deleteSellerBySeller(
       @RequestHeader Long memberId, @RequestHeader MemberRoleEnum memberRole) {
 
     sellerService.deleteSeller(memberId);
+  
     return ResponseEntity.ok()
-        .body(
-            ResponseFormat.<Void>builder()
-                .code(HttpStatus.OK.value())
-                .message(HttpStatus.OK.name())
-                .detail("셀러 탈퇴 성공")
-                .build());
+      .body(
+          ResponseFormat.<Void>builder()
+              .code(HttpStatus.OK.value())
+              .message(HttpStatus.OK.name())
+              .detail("셀러 탈퇴 성공")
+              .build());
   }
 
   @DeleteMapping("/sellers/{sellerId}")
@@ -100,6 +122,7 @@ public class SellerRestController {
       @PathVariable Long sellerId) {
 
     sellerService.deleteSeller(sellerId);
+    
     return ResponseEntity.ok()
         .body(
             ResponseFormat.<Void>builder()

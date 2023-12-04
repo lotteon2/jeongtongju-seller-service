@@ -2,12 +2,11 @@ package com.jeontongju.seller.controller;
 
 import com.jeontongju.seller.dto.temp.FeignFormat;
 import com.jeontongju.seller.dto.temp.SellerInfoDto;
+import com.jeontongju.seller.dto.temp.SignUpInfo;
 import com.jeontongju.seller.service.SellerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -23,4 +22,15 @@ public class ProductClientController {
         .data(sellerService.getSellerInfo(sellerId))
         .build();
   }
+
+  @PostMapping("/sellers")
+  FeignFormat<Void> saveSeller(@RequestBody SignUpInfo signUpInfo) {
+
+    sellerService.saveSeller(signUpInfo);
+
+    return FeignFormat.<Void>builder()
+            .code(HttpStatus.OK.value())
+            .build();
+  }
+
 }
