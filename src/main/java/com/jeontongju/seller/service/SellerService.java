@@ -1,19 +1,17 @@
 package com.jeontongju.seller.service;
 
-import com.jeontongju.seller.dto.response.SellerInfoForAdminDto;
 import com.jeontongju.seller.domain.Seller;
 import com.jeontongju.seller.dto.reqeust.ModifySellerInfo;
 import com.jeontongju.seller.dto.reqeust.SellerJudgeRequestDto;
 import com.jeontongju.seller.dto.response.GetMySellerInfo;
-import com.jeontongju.seller.dto.response.SellerInfoForConsumerDto;
 import com.jeontongju.seller.dto.response.SellerInfoDetailsDto;
+import com.jeontongju.seller.dto.response.SellerInfoForAdminDto;
 import com.jeontongju.seller.dto.response.SellerInfoForConsumerDto;
 import com.jeontongju.seller.dto.response.SellerMyInfoDto;
 import com.jeontongju.seller.dto.temp.SellerInfoDto;
 import com.jeontongju.seller.dto.temp.SignUpInfo;
 import com.jeontongju.seller.exception.SellerEntityNotFoundException;
 import com.jeontongju.seller.kafka.SellerProducer;
-import com.jeontongju.seller.kafka.ProductProducer;
 import com.jeontongju.seller.mapper.SellerMapper;
 import com.jeontongju.seller.repository.SellerRepository;
 import lombok.RequiredArgsConstructor;
@@ -31,7 +29,6 @@ public class SellerService {
 
   private final SellerRepository sellerRepository;
   private final SellerProducer sellerProducer;
-  private final ProductProducer productProducer;
   private final SellerMapper sellerMapper;
 
   public SellerInfoDto getSellerInfo(Long sellerId) {
@@ -50,6 +47,7 @@ public class SellerService {
 
     return sellerRepository.findAllSeller(pageable);
   }
+
   @Transactional
   public void modifySellerApprovalState(SellerJudgeRequestDto sellerJudgeRequestDto) {
     Seller seller =
@@ -64,7 +62,7 @@ public class SellerService {
     return SellerInfoForConsumerDto.toDto(
         sellerRepository.findById(sellerId).orElseThrow(SellerEntityNotFoundException::new));
   }
-  
+
   public SellerInfoDetailsDto getSellerOne(Long sellerId) {
 
     return SellerInfoDetailsDto.toDto(
@@ -74,27 +72,30 @@ public class SellerService {
   public GetMySellerInfo getMyInfo(Long sellerId) {
 
     return GetMySellerInfo.toDto(
-            sellerRepository.findById(sellerId).orElseThrow(SellerEntityNotFoundException::new));
-  } 
+        sellerRepository.findById(sellerId).orElseThrow(SellerEntityNotFoundException::new));
+  }
 
   @Transactional
   public void deleteSeller(Long sellerId) {
-    Seller seller = sellerRepository.findById(sellerId).orElseThrow(SellerEntityNotFoundException::new);
+    Seller seller =
+        sellerRepository.findById(sellerId).orElseThrow(SellerEntityNotFoundException::new);
     seller.setDeleted(true);
-    sellerProducer.deleteSeller(sellerId);
+    sellerProducer.deleteSellerToProduct(sellerId);
+    sellerProducer.deleteSellerToReview(sellerId);
   }
-  
+
   @Transactional
   public void modifySeller(Long memberId, ModifySellerInfo modifySellerInfo) {
 
-    Seller seller = sellerRepository.findById(memberId).orElseThrow(SellerEntityNotFoundException::new);
+    Seller seller =
+        sellerRepository.findById(memberId).orElseThrow(SellerEntityNotFoundException::new);
     seller.modifySeller(modifySellerInfo);
 
-    productProducer.sendUpdateSeller(SellerInfoDto.toDto(seller));
- }
-  
+    sellerProducer.sendUpdateSeller(SellerInfoDto.toDto(seller));
+  }
+
   @Transactional
   public Seller saveSeller(SignUpInfo signUpInfo) {
     return sellerRepository.save(sellerMapper.toSeller(signUpInfo));
- }
+  }
 }

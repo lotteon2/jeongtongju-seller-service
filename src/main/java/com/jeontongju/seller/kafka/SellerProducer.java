@@ -8,9 +8,17 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class SellerProducer<T> {
 
-    private final KafkaTemplate<String, T> kafkaTemplate;
+  private final KafkaTemplate<String, T> kafkaTemplate;
 
-    public void deleteSeller(T sellerId) {
-        kafkaTemplate.send("delete-seller", sellerId);
-    }
+  public void deleteSellerToProduct(T sellerId) {
+    kafkaTemplate.send("delete-seller-to-product", sellerId);
+  }
+
+  public void deleteSellerToReview(T sellerId) {
+    kafkaTemplate.send("delete-seller-to-review", sellerId);
+  }
+
+  public void sendUpdateSeller(T sellerInfoDto) {
+    kafkaTemplate.send("update-seller", sellerInfoDto);
+  }
 }
