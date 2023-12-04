@@ -1,5 +1,6 @@
 package com.jeontongju.seller.controller;
 
+import com.jeontongju.seller.dto.response.SellerInfoForAdminDto;
 import com.jeontongju.seller.dto.reqeust.ModifySellerInfo;
 import com.jeontongju.seller.dto.reqeust.SellerJudgeRequestDto;
 import com.jeontongju.seller.dto.response.GetMySellerInfo;
@@ -14,6 +15,10 @@ import com.jeontongju.seller.service.SellerService;
 import javax.servlet.annotation.WebServlet;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -39,6 +44,27 @@ public class SellerRestController {
                 .build());
   }
 
+  @GetMapping("/admin/sellers")
+  public ResponseEntity<ResponseFormat<Page<SellerInfoForAdminDto>>> getAllSeller(
+      @RequestHeader Long memberId,
+      @RequestHeader MemberRoleEnum memberRole,
+      @PageableDefault(
+              page = 0,
+              size = 10,
+              sort = {"createdAt"},
+              direction = Sort.Direction.DESC)
+          Pageable pageable) {
+
+    return ResponseEntity.ok()
+        .body(
+            ResponseFormat.<Page<SellerInfoForAdminDto>>builder()
+                .code(HttpStatus.OK.value())
+                .message(HttpStatus.OK.name())
+                .detail("모든 셀러 정보 조회 성공")
+                .data(sellerService.getAllSeller(pageable))
+                .build());
+  }
+  
   @PatchMapping("/sellers/judge")
   public ResponseEntity<ResponseFormat<Void>> modifySellerApprovalState(
       @RequestHeader Long memberId,

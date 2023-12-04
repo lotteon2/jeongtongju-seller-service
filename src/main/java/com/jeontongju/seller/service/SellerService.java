@@ -1,5 +1,6 @@
 package com.jeontongju.seller.service;
 
+import com.jeontongju.seller.dto.response.SellerInfoForAdminDto;
 import com.jeontongju.seller.domain.Seller;
 import com.jeontongju.seller.dto.reqeust.ModifySellerInfo;
 import com.jeontongju.seller.dto.reqeust.SellerJudgeRequestDto;
@@ -17,6 +18,8 @@ import com.jeontongju.seller.mapper.SellerMapper;
 import com.jeontongju.seller.repository.SellerRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -43,6 +46,10 @@ public class SellerService {
         sellerRepository.findById(sellerId).orElseThrow(SellerEntityNotFoundException::new));
   }
 
+  public Page<SellerInfoForAdminDto> getAllSeller(Pageable pageable) {
+
+    return sellerRepository.findAllSeller(pageable);
+  }
   @Transactional
   public void modifySellerApprovalState(SellerJudgeRequestDto sellerJudgeRequestDto) {
     Seller seller =
@@ -68,7 +75,7 @@ public class SellerService {
 
     return GetMySellerInfo.toDto(
             sellerRepository.findById(sellerId).orElseThrow(SellerEntityNotFoundException::new));
-} 
+  } 
 
   @Transactional
   public void deleteSeller(Long sellerId) {
@@ -89,5 +96,5 @@ public class SellerService {
   @Transactional
   public Seller saveSeller(SignUpInfo signUpInfo) {
     return sellerRepository.save(sellerMapper.toSeller(signUpInfo));
-  }
+ }
 }
