@@ -2,11 +2,13 @@ package com.jeontongju.seller.service;
 
 import com.jeontongju.seller.domain.Seller;
 import com.jeontongju.seller.dto.reqeust.SellerJudgeRequestDto;
-import com.jeontongju.seller.dto.response.SellerInfoForConsumerDto;
 import com.jeontongju.seller.dto.response.SellerInfoDetailsDto;
+import com.jeontongju.seller.dto.response.SellerInfoForConsumerDto;
 import com.jeontongju.seller.dto.response.SellerMyInfoDto;
 import com.jeontongju.seller.dto.temp.SellerInfoDto;
+import com.jeontongju.seller.dto.temp.SignUpInfo;
 import com.jeontongju.seller.exception.SellerEntityNotFoundException;
+import com.jeontongju.seller.mapper.SellerMapper;
 import com.jeontongju.seller.repository.SellerRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class SellerService {
 
   private final SellerRepository sellerRepository;
+  private final SellerMapper sellerMapper;
 
   public SellerInfoDto getSellerInfo(Long sellerId) {
 
@@ -52,5 +55,10 @@ public class SellerService {
 
     return SellerInfoDetailsDto.toDto(
         sellerRepository.findById(sellerId).orElseThrow(SellerEntityNotFoundException::new));
+  }
+
+  @Transactional
+  public Seller saveSeller(SignUpInfo signUpInfo) {
+    return sellerRepository.save(sellerMapper.toSeller(signUpInfo));
   }
 }
