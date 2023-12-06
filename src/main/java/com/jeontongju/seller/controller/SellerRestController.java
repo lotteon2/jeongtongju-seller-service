@@ -1,23 +1,17 @@
 package com.jeontongju.seller.controller;
 
-import com.jeontongju.seller.dto.response.SellerInfoForAdminDto;
 import com.jeontongju.seller.dto.reqeust.ModifySellerInfo;
 import com.jeontongju.seller.dto.reqeust.SellerJudgeRequestDto;
-import com.jeontongju.seller.dto.response.GetMySellerInfo;
+import com.jeontongju.seller.dto.response.*;
 import com.jeontongju.seller.dto.response.SellerInfoForConsumerDto;
-import com.jeontongju.seller.dto.response.SellerInfoDetailsDto;
-import com.jeontongju.seller.dto.response.SellerInfoForConsumerDto;
-import com.jeontongju.seller.dto.response.SellerMyInfoDto;
 import com.jeontongju.seller.dto.temp.ResponseFormat;
 import com.jeontongju.seller.enums.temp.MemberRoleEnum;
 import com.jeontongju.seller.service.SellerService;
-
-import javax.servlet.annotation.WebServlet;
+import java.util.List;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -48,12 +42,7 @@ public class SellerRestController {
   public ResponseEntity<ResponseFormat<Page<SellerInfoForAdminDto>>> getAllSeller(
       @RequestHeader Long memberId,
       @RequestHeader MemberRoleEnum memberRole,
-      @PageableDefault(
-              page = 0,
-              size = 10,
-              sort = {"createdAt"},
-              direction = Sort.Direction.DESC)
-          Pageable pageable) {
+      @PageableDefault(page = 0, size = 10) Pageable pageable) {
 
     return ResponseEntity.ok()
         .body(
@@ -64,7 +53,7 @@ public class SellerRestController {
                 .data(sellerService.getAllSeller(pageable))
                 .build());
   }
-  
+
   @PatchMapping("/sellers/judge")
   public ResponseEntity<ResponseFormat<Void>> modifySellerApprovalState(
       @RequestHeader Long memberId,
@@ -118,29 +107,29 @@ public class SellerRestController {
       @Valid @RequestBody ModifySellerInfo modifySellerInfo) {
 
     sellerService.modifySeller(memberId, modifySellerInfo);
-  
+
     return ResponseEntity.ok()
-      .body(
-          ResponseFormat.<Void>builder()
-              .code(HttpStatus.OK.value())
-              .message(HttpStatus.OK.name())
-              .detail("개인 정보 수정 성공")
-              .build());
+        .body(
+            ResponseFormat.<Void>builder()
+                .code(HttpStatus.OK.value())
+                .message(HttpStatus.OK.name())
+                .detail("개인 정보 수정 성공")
+                .build());
   }
-  
+
   @DeleteMapping("/sellers")
   public ResponseEntity<ResponseFormat<Void>> deleteSellerBySeller(
       @RequestHeader Long memberId, @RequestHeader MemberRoleEnum memberRole) {
 
     sellerService.deleteSeller(memberId);
-  
+
     return ResponseEntity.ok()
-      .body(
-          ResponseFormat.<Void>builder()
-              .code(HttpStatus.OK.value())
-              .message(HttpStatus.OK.name())
-              .detail("셀러 탈퇴 성공")
-              .build());
+        .body(
+            ResponseFormat.<Void>builder()
+                .code(HttpStatus.OK.value())
+                .message(HttpStatus.OK.name())
+                .detail("셀러 탈퇴 성공")
+                .build());
   }
 
   @DeleteMapping("/sellers/{sellerId}")
@@ -150,7 +139,7 @@ public class SellerRestController {
       @PathVariable Long sellerId) {
 
     sellerService.deleteSeller(sellerId);
-    
+
     return ResponseEntity.ok()
         .body(
             ResponseFormat.<Void>builder()
@@ -162,15 +151,29 @@ public class SellerRestController {
 
   @GetMapping("/sellers/info")
   public ResponseEntity<ResponseFormat<GetMySellerInfo>> getMyInfo(
-          @RequestHeader Long memberId, @RequestHeader MemberRoleEnum memberRole) {
+      @RequestHeader Long memberId, @RequestHeader MemberRoleEnum memberRole) {
 
     return ResponseEntity.ok()
-            .body(
-                    ResponseFormat.<GetMySellerInfo>builder()
-                            .code(HttpStatus.OK.value())
-                            .message(HttpStatus.OK.name())
-                            .detail("내 정보 조회에 성공")
-                            .data(sellerService.getMyInfo(memberId))
-                            .build());
+        .body(
+            ResponseFormat.<GetMySellerInfo>builder()
+                .code(HttpStatus.OK.value())
+                .message(HttpStatus.OK.name())
+                .detail("내 정보 조회에 성공")
+                .data(sellerService.getMyInfo(memberId))
+                .build());
+  }
+
+  @GetMapping("/admin/sellers/info")
+  public ResponseEntity<ResponseFormat<List<GetSellerByAdminDto>>> getSellerListByAdmin(
+      @RequestHeader Long memberId, @RequestHeader MemberRoleEnum memberRole) {
+
+    return ResponseEntity.ok()
+        .body(
+            ResponseFormat.<List<GetSellerByAdminDto>>builder()
+                .code(HttpStatus.OK.value())
+                .message(HttpStatus.OK.name())
+                .detail("셀러 id, 가게 이름 조회 성공")
+                .data(sellerService.getSellerListByAdmin())
+                .build());
   }
 }

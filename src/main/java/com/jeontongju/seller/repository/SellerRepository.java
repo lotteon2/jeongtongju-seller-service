@@ -10,6 +10,6 @@ import org.springframework.data.jpa.repository.Query;
 public interface SellerRepository extends JpaRepository<Seller, Long> {
 
   @Query(
-      "select new com.jeontongju.seller.dto.response.SellerInfoForAdminDto(s.sellerId, s.email, s.businessmanName, s.storeName, s.storePhoneNumber, s.createdAt, s.approvalState, s.isDeleted, s.storeDescription, s.storeImageUrl) from Seller s")
+      "select new com.jeontongju.seller.dto.response.SellerInfoForAdminDto(s.sellerId, s.email, s.businessmanName, s.storeName, s.storePhoneNumber, s.createdAt, s.approvalState, s.isDeleted, s.storeDescription, s.storeImageUrl) from Seller s order by s.approvalState desc, s.createdAt")
   Page<SellerInfoForAdminDto> findAllSeller(Pageable pageable);
 }
