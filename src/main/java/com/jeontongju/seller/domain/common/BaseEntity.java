@@ -1,6 +1,6 @@
 package com.jeontongju.seller.domain.common;
 
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import javax.persistence.Column;
 import javax.persistence.EntityListeners;
 import javax.persistence.MappedSuperclass;
@@ -15,10 +15,10 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 public class BaseEntity {
 
   @CreatedDate
-  @Column(name = "created_at")
-  private Timestamp createdAt;
+  @Column(name = "created_at", columnDefinition = "TIMESTAMP")
+  private LocalDateTime createdAt;
 
   @LastModifiedDate
-  @Column(name = "updated_at")
-  private Timestamp updatedAt;
+  @Column(name = "updated_at", columnDefinition = "TIMESTAMP")
+  private LocalDateTime updatedAt;
 }
