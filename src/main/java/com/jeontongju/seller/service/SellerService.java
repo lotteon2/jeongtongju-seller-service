@@ -3,11 +3,7 @@ package com.jeontongju.seller.service;
 import com.jeontongju.seller.domain.Seller;
 import com.jeontongju.seller.dto.reqeust.ModifySellerInfo;
 import com.jeontongju.seller.dto.reqeust.SellerJudgeRequestDto;
-import com.jeontongju.seller.dto.response.GetMySellerInfo;
-import com.jeontongju.seller.dto.response.SellerInfoDetailsDto;
-import com.jeontongju.seller.dto.response.SellerInfoForAdminDto;
-import com.jeontongju.seller.dto.response.SellerInfoForConsumerDto;
-import com.jeontongju.seller.dto.response.SellerMyInfoDto;
+import com.jeontongju.seller.dto.response.*;
 import com.jeontongju.seller.dto.temp.SellerInfoDto;
 import com.jeontongju.seller.dto.temp.SignUpInfo;
 import com.jeontongju.seller.exception.SellerEntityNotFoundException;
@@ -97,5 +93,11 @@ public class SellerService {
   @Transactional
   public Seller saveSeller(SignUpInfo signUpInfo) {
     return sellerRepository.save(sellerMapper.toSeller(signUpInfo));
+  }
+
+  public SellerInfoForAuctionDto getSellerInfoForAuction(Long sellerId) {
+
+    return SellerInfoForAuctionDto.toDto(
+        sellerRepository.findById(sellerId).orElseThrow(SellerEntityNotFoundException::new));
   }
 }
