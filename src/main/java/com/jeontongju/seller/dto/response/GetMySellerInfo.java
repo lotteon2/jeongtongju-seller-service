@@ -5,22 +5,22 @@ import com.jeontongju.seller.enums.ApprovalState;
 import lombok.*;
 
 @Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor
+@AllArgsConstructor
 @Builder
 public class GetMySellerInfo {
 
-    private Long sellerId;
-    private String storeName;
-    private String storeImageUrl;
-    private ApprovalState approvalState;
+  private Long sellerId;
+  private String storeName;
+  private String storeImageUrl;
+  private ApprovalState approvalState;
 
-    public static GetMySellerInfo toDto(Seller seller) {
-        return GetMySellerInfo.builder()
-                .sellerId(seller.getSellerId())
-                .storeName(seller.getStoreName())
-                .storeImageUrl(seller.getStoreImageUrl())
-                .approvalState(seller.getApprovalState())
-                .build();
-    }
+  public static GetMySellerInfo toDto(Seller seller) {
+    return GetMySellerInfo.builder()
+        .sellerId(seller.getSellerId())
+        .storeName(seller.getStoreName())
+        .storeImageUrl(seller.getStoreImageUrl())
+        .approvalState(seller.getApprovalState())
+        .build();
+  }
 }

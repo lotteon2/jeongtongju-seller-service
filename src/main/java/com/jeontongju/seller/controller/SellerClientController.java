@@ -1,5 +1,6 @@
 package com.jeontongju.seller.controller;
 
+import com.jeontongju.seller.dto.response.SellerInfoForAuctionDto;
 import com.jeontongju.seller.dto.temp.FeignFormat;
 import com.jeontongju.seller.dto.temp.SellerInfoDto;
 import com.jeontongju.seller.dto.temp.SignUpInfo;
@@ -10,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-public class ProductClientController {
+public class SellerClientController {
 
   private final SellerService sellerService;
 
@@ -21,6 +22,15 @@ public class ProductClientController {
         .code(HttpStatus.OK.value())
         .data(sellerService.getSellerInfo(sellerId))
         .build();
+  }
+
+  @GetMapping("sellers/{sellerId}/auction")
+  FeignFormat<SellerInfoForAuctionDto> getSellerInfoForAuction(@PathVariable Long sellerId) {
+
+    return FeignFormat.<SellerInfoForAuctionDto>builder()
+            .code(HttpStatus.OK.value())
+            .data(sellerService.getSellerInfoForAuction(sellerId))
+            .build();
   }
 
   @PostMapping("/sellers")

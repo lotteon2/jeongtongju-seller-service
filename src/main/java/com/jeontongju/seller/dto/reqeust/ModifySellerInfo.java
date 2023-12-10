@@ -5,8 +5,8 @@ import lombok.*;
 
 @Getter
 @Builder
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor
+@AllArgsConstructor
 public class ModifySellerInfo {
 
   @Size(min = 1, max = 10, message = "가게 명은 1글자 이상 10 글자 이하만 입력 가능합니다.")
