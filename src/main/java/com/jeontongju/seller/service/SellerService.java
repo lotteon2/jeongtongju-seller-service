@@ -4,12 +4,16 @@ import com.jeontongju.seller.domain.Seller;
 import com.jeontongju.seller.dto.reqeust.ModifySellerInfo;
 import com.jeontongju.seller.dto.reqeust.SellerJudgeRequestDto;
 import com.jeontongju.seller.dto.response.*;
+
+import com.jeontongju.seller.dto.response.SellerInfoForConsumerDto;
 import com.jeontongju.seller.dto.temp.SellerInfoDto;
 import com.jeontongju.seller.dto.temp.SignUpInfo;
 import com.jeontongju.seller.exception.SellerEntityNotFoundException;
 import com.jeontongju.seller.kafka.SellerProducer;
 import com.jeontongju.seller.mapper.SellerMapper;
 import com.jeontongju.seller.repository.SellerRepository;
+import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -99,5 +103,12 @@ public class SellerService {
 
     return SellerInfoForAuctionDto.toDto(
         sellerRepository.findById(sellerId).orElseThrow(SellerEntityNotFoundException::new));
+  }
+ 
+  public List<GetSellerByAdminDto> getSellerListByAdmin() {
+
+    return sellerRepository.findAll().stream()
+        .map(seller -> GetSellerByAdminDto.toDto(seller))
+        .collect(Collectors.toList());
   }
 }

@@ -20,7 +20,7 @@ public class SellerInfoForAdminDto {
   private String storePhoneNumber;
   private LocalDateTime createdAt;
   private ApprovalState approvalState;
-  private Boolean isActivate;
+  private Boolean isDeleted;
   private String storeDescription;
   private String storeImageUrl;
 }
