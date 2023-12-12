@@ -1,8 +1,8 @@
 package com.jeontongju.seller.controller;
 
-import com.jeontongju.seller.dto.response.SellerInfoForAuctionDto;
 import com.jeontongju.seller.dto.temp.FeignFormat;
 import com.jeontongju.seller.dto.temp.SellerInfoDto;
+import com.jeontongju.seller.dto.temp.SellerInfoForAuctionDto;
 import com.jeontongju.seller.dto.temp.SignUpInfo;
 import com.jeontongju.seller.service.SellerService;
 import lombok.RequiredArgsConstructor;
@@ -28,9 +28,9 @@ public class SellerClientController {
   FeignFormat<SellerInfoForAuctionDto> getSellerInfoForAuction(@PathVariable Long sellerId) {
 
     return FeignFormat.<SellerInfoForAuctionDto>builder()
-            .code(HttpStatus.OK.value())
-            .data(sellerService.getSellerInfoForAuction(sellerId))
-            .build();
+        .code(HttpStatus.OK.value())
+        .data(sellerService.getSellerInfoForAuction(sellerId))
+        .build();
   }
 
   @PostMapping("/sellers")
@@ -38,9 +38,6 @@ public class SellerClientController {
 
     sellerService.saveSeller(signUpInfo);
 
-    return FeignFormat.<Void>builder()
-            .code(HttpStatus.OK.value())
-            .build();
+    return FeignFormat.<Void>builder().code(HttpStatus.OK.value()).build();
   }
-
 }
