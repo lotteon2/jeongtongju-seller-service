@@ -1,6 +1,5 @@
 package com.jeontongju.seller.dto.temp;
 
-import com.jeontongju.seller.domain.Seller;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -19,10 +18,4 @@ public class SellerInfoDto {
   private String storeName;
   private String storeImageUrl;
 
-  public static SellerInfoDto toDto(Seller seller) {
-    return SellerInfoDto.builder()
-        .storeName(seller.getStoreName())
-        .storeImageUrl(seller.getStoreImageUrl())
-        .build();
-  }
 }
