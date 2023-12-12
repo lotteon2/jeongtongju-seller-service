@@ -1,7 +1,7 @@
 package com.jeontongju.seller.exception.advice;
 
-import com.jeontongju.seller.dto.temp.ResponseFormat;
 import com.jeontongju.seller.exception.common.DomainException;
+import io.github.bitbox.bitbox.dto.ResponseFormat;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
