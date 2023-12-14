@@ -1,10 +1,10 @@
 package com.jeontongju.seller.controller;
 
-import com.jeontongju.seller.dto.temp.FeignFormat;
-import com.jeontongju.seller.dto.temp.SellerInfoDto;
-import com.jeontongju.seller.dto.temp.SellerInfoForAuctionDto;
-import com.jeontongju.seller.dto.temp.SignUpInfo;
 import com.jeontongju.seller.service.SellerService;
+import io.github.bitbox.bitbox.dto.FeignFormat;
+import io.github.bitbox.bitbox.dto.SellerInfoDto;
+import io.github.bitbox.bitbox.dto.SellerInfoForAuctionDto;
+import io.github.bitbox.bitbox.dto.SignUpInfo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
