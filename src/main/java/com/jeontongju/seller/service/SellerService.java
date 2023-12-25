@@ -48,6 +48,11 @@ public class SellerService {
     return sellerRepository.findAllSeller(pageable);
   }
 
+  public Page<GetSellerForConsumerDto> getAllSellerByConsumer(Pageable pageable) {
+
+    return sellerRepository.findAllSellerByConsumer(pageable);
+  }
+
   @Transactional
   public void modifySellerApprovalState(SellerJudgeRequestDto sellerJudgeRequestDto) {
     Seller seller =
