@@ -1,7 +1,9 @@
 package com.jeontongju.seller.mapper;
 
 import com.jeontongju.seller.domain.Seller;
-import com.jeontongju.seller.dto.temp.SignUpInfo;
+import io.github.bitbox.bitbox.dto.SellerInfoDto;
+import io.github.bitbox.bitbox.dto.SellerInfoForAuctionDto;
+import io.github.bitbox.bitbox.dto.SignUpInfo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -19,6 +21,24 @@ public class SellerMapper {
         .storePhoneNumber(signUpInfo.getStorePhoneNumber())
         .businessmanName(signUpInfo.getBusinessmanName())
         .businessmanPhoneNumber(signUpInfo.getBusinessmanPhoneNumber())
+        .build();
+  }
+
+  public SellerInfoDto toSellerInfoDto(Seller seller) {
+    return SellerInfoDto.builder()
+        .storeName(seller.getStoreName())
+        .storeImageUrl(seller.getStoreImageUrl())
+        .build();
+  }
+
+  public SellerInfoForAuctionDto toSellerInfoForAuctionDto(Seller seller) {
+
+    return SellerInfoForAuctionDto.builder()
+        .storeImageUrl(seller.getStoreImageUrl())
+        .storeName(seller.getStoreName())
+        .storeEmail(seller.getEmail())
+        .storePhoneNumber(seller.getStorePhoneNumber())
+        .businessmanName(seller.getBusinessmanName())
         .build();
   }
 }

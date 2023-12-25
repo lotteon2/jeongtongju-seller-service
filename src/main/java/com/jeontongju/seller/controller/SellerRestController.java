@@ -4,11 +4,12 @@ import com.jeontongju.seller.dto.reqeust.ModifySellerInfo;
 import com.jeontongju.seller.dto.reqeust.SellerJudgeRequestDto;
 import com.jeontongju.seller.dto.response.*;
 import com.jeontongju.seller.dto.response.SellerInfoForConsumerDto;
-import com.jeontongju.seller.dto.temp.ResponseFormat;
 import com.jeontongju.seller.enums.temp.MemberRoleEnum;
 import com.jeontongju.seller.service.SellerService;
 import java.util.List;
 import javax.validation.Valid;
+
+import io.github.bitbox.bitbox.dto.ResponseFormat;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

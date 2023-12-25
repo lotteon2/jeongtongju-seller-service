@@ -1,7 +1,7 @@
 package com.jeontongju.seller.exception.advice;
 
-import com.jeontongju.seller.dto.temp.ResponseFormat;
 import com.jeontongju.seller.exception.common.DomainException;
+import io.github.bitbox.bitbox.dto.ResponseFormat;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -26,7 +26,7 @@ public class ApiControllerAdvice extends ResponseEntityExceptionHandler {
 
   @ExceptionHandler(DomainException.class)
   public ResponseEntity<ResponseFormat> domainException(DomainException e) {
-    log.error("{PRODUCT}", e.getMessage());
+    log.error("{SELLER}", e.getMessage());
     HttpStatus status = e.getStatus();
     ResponseFormat body =
         ResponseFormat.builder()
@@ -40,7 +40,7 @@ public class ApiControllerAdvice extends ResponseEntityExceptionHandler {
 
   @ExceptionHandler(DuplicateKeyException.class)
   public ResponseEntity<ResponseFormat> duplicateKeyException(DuplicateKeyException e) {
-    log.error("{PRODUCT}", e.getMessage());
+    log.error("{SELLER}", e.getMessage());
     HttpStatus status = HttpStatus.BAD_REQUEST;
     ResponseFormat body =
         ResponseFormat.builder()
@@ -59,7 +59,7 @@ public class ApiControllerAdvice extends ResponseEntityExceptionHandler {
       HttpStatus status,
       WebRequest request) {
 
-    log.error("{PRODUCT}", e.getMessage());
+    log.error("{SELLER}", e.getMessage());
     ResponseFormat body =
         ResponseFormat.builder()
             .code(status.value())
@@ -76,7 +76,7 @@ public class ApiControllerAdvice extends ResponseEntityExceptionHandler {
   @ExceptionHandler(DataIntegrityViolationException.class)
   public ResponseEntity<ResponseFormat> constraintViolationException(
       DataIntegrityViolationException e) {
-    log.error("{PRODUCT}", e.getMessage());
+    log.error("{SELLER}", e.getMessage());
     HttpStatus status = HttpStatus.BAD_REQUEST;
     ResponseFormat body =
         ResponseFormat.builder()
@@ -91,7 +91,7 @@ public class ApiControllerAdvice extends ResponseEntityExceptionHandler {
   @ExceptionHandler(Exception.class)
   @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
   public ResponseEntity<ResponseFormat> exception(Exception e) {
-    log.error("{PRODUCT}", e.getMessage());
+    log.error("{SELLER}", e.getMessage());
     HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
 
     ResponseFormat body =
