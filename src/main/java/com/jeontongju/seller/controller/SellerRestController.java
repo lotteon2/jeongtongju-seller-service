@@ -4,12 +4,11 @@ import com.jeontongju.seller.dto.reqeust.ModifySellerInfo;
 import com.jeontongju.seller.dto.reqeust.SellerJudgeRequestDto;
 import com.jeontongju.seller.dto.response.*;
 import com.jeontongju.seller.dto.response.SellerInfoForConsumerDto;
-import com.jeontongju.seller.enums.temp.MemberRoleEnum;
 import com.jeontongju.seller.service.SellerService;
+import io.github.bitbox.bitbox.dto.ResponseFormat;
+import io.github.bitbox.bitbox.enums.MemberRoleEnum;
 import java.util.List;
 import javax.validation.Valid;
-
-import io.github.bitbox.bitbox.dto.ResponseFormat;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -53,6 +52,20 @@ public class SellerRestController {
                 .detail("모든 셀러 정보 조회 성공")
                 .data(sellerService.getAllSeller(pageable))
                 .build());
+  }
+
+  @GetMapping("/sellers/all")
+  public ResponseEntity<ResponseFormat<Page<GetSellerForConsumerDto>>> getAllSellerByConsumer(
+          @PageableDefault(page = 0, size = 10) Pageable pageable) {
+
+    return ResponseEntity.ok()
+            .body(
+                    ResponseFormat.<Page<GetSellerForConsumerDto>>builder()
+                            .code(HttpStatus.OK.value())
+                            .message(HttpStatus.OK.name())
+                            .detail("모든 셀러 정보 조회 성공")
+                            .data(sellerService.getAllSellerByConsumer(pageable))
+                            .build());
   }
 
   @PatchMapping("/sellers/judge")
