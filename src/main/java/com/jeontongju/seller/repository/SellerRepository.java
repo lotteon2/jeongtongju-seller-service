@@ -15,6 +15,6 @@ public interface SellerRepository extends JpaRepository<Seller, Long> {
   Page<SellerInfoForAdminDto> findAllSeller(Pageable pageable);
 
   @Query(
-          "select new com.jeontongju.seller.dto.response.GetSellerForConsumerDto(s.sellerId, s.email, s.businessmanName, s.storeName, s.storePhoneNumber, s.createdAt, s.storeDescription, s.storeImageUrl) from Seller s where s.isDeleted = false and s.approvalState != 'WAIT'")
+          "select new com.jeontongju.seller.dto.response.GetSellerForConsumerDto(s.sellerId, s.email, s.businessmanName, s.storeName, s.storePhoneNumber, s.createdAt, s.storeDescription, s.storeImageUrl) from Seller s where s.isDeleted = false and s.approvalState = 'ALLOW'")
   Page<GetSellerForConsumerDto> findAllSellerByConsumer(Pageable pageable);
 }
