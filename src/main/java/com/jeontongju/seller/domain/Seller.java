@@ -21,10 +21,10 @@ public class Seller extends BaseEntity {
   @Column(name = "email", nullable = false, unique = true)
   private String email;
 
-  @Column(name = "store_name", nullable = false, length = 10)
+  @Column(name = "store_name", nullable = false)
   private String storeName;
 
-  @Column(name = "store_description", nullable = false, length = 50)
+  @Column(name = "store_description", nullable = false)
   private String storeDescription;
 
   @Column(name = "store_image_url", nullable = false)
