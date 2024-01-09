@@ -5,6 +5,7 @@ import com.jeontongju.seller.dto.reqeust.ModifySellerInfo;
 import com.jeontongju.seller.dto.reqeust.SellerJudgeRequestDto;
 import com.jeontongju.seller.dto.response.*;
 import com.jeontongju.seller.dto.response.SellerInfoForConsumerDto;
+import com.jeontongju.seller.enums.ApprovalState;
 import com.jeontongju.seller.exception.SellerEntityNotFoundException;
 import com.jeontongju.seller.kafka.SellerProducer;
 import com.jeontongju.seller.mapper.SellerMapper;
@@ -115,5 +116,9 @@ public class SellerService {
     return sellerRepository.findAll().stream()
         .map(seller -> GetSellerByAdminDto.toDto(seller))
         .collect(Collectors.toList());
+  }
+
+  public Long getApprovalWaitCount() {
+    return sellerRepository.countByApprovalState(ApprovalState.WAIT);
   }
 }
