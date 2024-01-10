@@ -40,4 +40,13 @@ public class SellerClientController {
 
     return FeignFormat.<Void>builder().code(HttpStatus.OK.value()).build();
   }
+
+  @GetMapping("/sellers/approval-wait")
+  FeignFormat<Long> getApprovalWaitCount() {
+
+    return FeignFormat.<Long>builder()
+        .code(HttpStatus.OK.value())
+        .data(sellerService.getApprovalWaitCount())
+        .build();
+  }
 }
