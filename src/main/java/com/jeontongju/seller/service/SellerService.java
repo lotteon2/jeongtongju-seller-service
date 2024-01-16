@@ -88,6 +88,7 @@ public class SellerService {
     seller.setDeleted(true);
     sellerProducer.deleteSellerToProduct(sellerId);
     sellerProducer.deleteSellerToReview(sellerId);
+    sellerProducer.deleteSellerToAuthentication(sellerId);
   }
 
   @Transactional
